@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Food Processing Vocabulary - Aplikasi Belajar Kosakata Pengolahan Makanan Profesional">
+<meta name="theme-color" content="#0a0a0f">
+<title>FoodLex — Food Processing Vocabulary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-content">
+    <div class="splash-logo">🍽️</div>
+    <h1 class="splash-title">FoodLex</h1>
+    <p class="splash-sub">Food Processing Vocabulary</p>
+    <div class="splash-loader"><div class="splash-bar"></div></div>
+  </div>
+</div>
+
+<!-- APP WRAPPER -->
+<div id="app" class="hidden">
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <span class="logo-icon">🍽️</span>
+        <span class="logo-text">FoodLex</span>
+      </div>
+      <div class="header-stats">
+        <div class="stat-pill" id="stat-learned">
+          <span class="stat-icon">✅</span>
+          <span id="learned-count">0</span>
+          <span>learned</span>
+        </div>
+        <div class="stat-pill" id="stat-streak">
+          <span class="stat-icon">🔥</span>
+          <span id="streak-count">0</span>
+          <span>streak</span>
+        </div>
+      </div>
+      <button class="search-btn" id="search-toggle" title="Search">🔍</button>
+    </div>
+    <!-- SEARCH BAR -->
+    <div id="search-bar" class="search-bar hidden">
+      <input type="text" id="search-input" placeholder="Search vocabulary..." autocomplete="off">
+      <button id="search-close">✕</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
+
+    <!-- HOME VIEW -->
+    <div id="view-home" class="view active">
+      <div class="home-hero">
+        <div class="hero-greeting" id="hero-greeting">Good morning 👋</div>
+        <h2 class="hero-title">What's on the menu<br>for today?</h2>
+        <div class="progress-overview">
+          <div class="progress-circle-wrap">
+            <svg class="progress-ring" viewBox="0 0 100 100">
+              <circle class="ring-bg" cx="50" cy="50" r="42"/>
+              <circle class="ring-fill" cx="50" cy="50" r="42" id="ring-fill" stroke-dasharray="264" stroke-dashoffset="264"/>
+            </svg>
+            <div class="progress-inner">
+              <span id="progress-pct">0%</span>
+              <span class="progress-label">complete</span>
+            </div>
+          </div>
+          <div class="progress-details">
+            <div class="pdet"><span id="total-learned">0</span><small>learned</small></div>
+            <div class="pdet"><span id="total-words">0</span><small>total words</small></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CATEGORY GRID -->
+      <section class="section">
+        <div class="section-header">
+          <h3>Categories</h3>
+          <button class="btn-ghost" id="reset-all-btn">Reset Progress</button>
+        </div>
+        <div class="category-grid" id="category-grid"></div>
+      </section>
+
+      <!-- QUICK ACTIONS -->
+      <section class="section">
+        <h3>Study Modes</h3>
+        <div class="mode-cards">
+          <div class="mode-card" id="mode-flashcard">
+            <div class="mode-icon">🃏</div>
+            <div class="mode-info">
+              <h4>Flashcard</h4>
+              <p>Swipe to learn</p>
+            </div>
+            <div class="mode-arrow">→</div>
+          </div>
+          <div class="mode-card" id="mode-type">
+            <div class="mode-icon">✍️</div>
+            <div class="mode-info">
+              <h4>Typing</h4>
+              <p>Practice writing</p>
+            </div>
+            <div class="mode-arrow">→</div>
+          </div>
+          <div class="mode-card" id="mode-review">
+            <div class="mode-icon">🔄</div>
+            <div class="mode-info">
+              <h4>Review</h4>
+              <p>Review learned words</p>
+            </div>
+            <div class="mode-arrow">→</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- FLASHCARD VIEW -->
+    <div id="view-flashcard" class="view">
+      <div class="view-header">
+        <button class="back-btn" id="fc-back">← Back</button>
+        <div class="view-title" id="fc-category-name">Flashcard</div>
+        <div class="fc-progress-text"><span id="fc-current">1</span>/<span id="fc-total">1</span></div>
+      </div>
+      <div class="fc-progress-bar"><div id="fc-bar" class="fc-bar-fill"></div></div>
+
+      <div class="flashcard-area">
+        <div class="flashcard-container" id="fc-container">
+          <div class="flashcard" id="flashcard">
+            <div class="card-front">
+              <div class="card-category-badge" id="fc-badge"></div>
+              <div class="card-word" id="fc-word"></div>
+              <div class="card-tap-hint">tap to reveal →</div>
+            </div>
+            <div class="card-back">
+              <div class="card-word-small" id="fc-word-back"></div>
+              <div class="card-meaning" id="fc-meaning"></div>
+              <div class="card-desc" id="fc-desc"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SWIPE INDICATORS -->
+        <div class="swipe-hint swipe-left" id="swipe-left">✗ Skip</div>
+        <div class="swipe-hint swipe-right" id="swipe-right">✓ Got it!</div>
+      </div>
+
+      <div class="fc-actions">
+        <button class="fc-btn fc-btn-skip" id="fc-skip">✗ Skip</button>
+        <button class="fc-btn fc-btn-flip" id="fc-flip">↻ Flip</button>
+        <button class="fc-btn fc-btn-got" id="fc-got">✓ Got it!</button>
+      </div>
+      <p class="fc-swipe-note">or swipe left / right</p>
+    </div>
+
+    <!-- TYPING VIEW -->
+    <div id="view-typing" class="view">
+      <div class="view-header">
+        <button class="back-btn" id="type-back">← Back</button>
+        <div class="view-title">Typing Practice</div>
+        <div class="fc-progress-text"><span id="type-current">1</span>/<span id="type-total">1</span></div>
+      </div>
+      <div class="fc-progress-bar"><div id="type-bar" class="fc-bar-fill"></div></div>
+
+      <div class="typing-area">
+        <div class="typing-prompt">
+          <div class="typing-label">Translate to English:</div>
+          <div class="typing-word" id="type-word"></div>
+          <div class="typing-desc" id="type-desc"></div>
+        </div>
+        <div class="typing-input-wrap">
+          <input type="text" id="type-input" placeholder="Type your answer..." autocomplete="off" autocorrect="off" spellcheck="false">
+          <button id="type-submit">Submit →</button>
+        </div>
+        <div class="typing-feedback hidden" id="type-feedback">
+          <div class="feedback-icon" id="feedback-icon"></div>
+          <div class="feedback-correct" id="feedback-correct"></div>
+          <div class="feedback-your">Your answer: <span id="feedback-yours"></span></div>
+          <button id="type-next" class="btn-next">Next →</button>
+        </div>
+        <div class="typing-skip-wrap">
+          <button id="type-skip" class="btn-ghost-sm">Skip this word</button>
+          <button id="type-hint" class="btn-ghost-sm">💡 Hint</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEW VIEW -->
+    <div id="view-review" class="view">
+      <div class="view-header">
+        <button class="back-btn" id="review-back">← Back</button>
+        <div class="view-title">Review — Learned Words</div>
+        <div class="fc-progress-text" id="review-count-badge"></div>
+      </div>
+      <div class="review-list" id="review-list"></div>
+    </div>
+
+    <!-- CATEGORY SELECT VIEW -->
+    <div id="view-category-select" class="view">
+      <div class="view-header">
+        <button class="back-btn" id="cat-back">← Back</button>
+        <div class="view-title" id="cat-select-title">Choose Category</div>
+      </div>
+      <div class="cat-select-mode" id="cat-select-mode"></div>
+      <div class="cat-grid-select" id="cat-grid-select"></div>
+    </div>
+
+    <!-- SEARCH RESULTS VIEW -->
+    <div id="view-search" class="view">
+      <div class="view-header">
+        <button class="back-btn" id="search-back">← Back</button>
+        <div class="view-title">Search Results</div>
+        <div class="fc-progress-text" id="search-result-count"></div>
+      </div>
+      <div class="search-results-list" id="search-results-list"></div>
+    </div>
+
+    <!-- COMPLETION VIEW -->
+    <div id="view-complete" class="view">
+      <div class="complete-screen">
+        <div class="complete-emoji">🎉</div>
+        <h2 class="complete-title">Session Complete!</h2>
+        <div class="complete-stats">
+          <div class="cstat"><span id="c-correct">0</span><small>Correct</small></div>
+          <div class="cstat"><span id="c-skipped">0</span><small>Skipped</small></div>
+          <div class="cstat"><span id="c-total">0</span><small>Total</small></div>
+        </div>
+        <div class="complete-score" id="complete-score"></div>
+        <div class="complete-btns">
+          <button class="btn-primary" id="c-again">Study Again</button>
+          <button class="btn-ghost" id="c-home">← Home</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" data-view="home">
+      <span class="nav-icon">🏠</span>
+      <span>Home</span>
+    </button>
+    <button class="nav-btn" data-view="flashcard">
+      <span class="nav-icon">🃏</span>
+      <span>Flashcard</span>
+    </button>
+    <button class="nav-btn" data-view="typing">
+      <span class="nav-icon">✍️</span>
+      <span>Typing</span>
+    </button>
+    <button class="nav-btn" data-view="review">
+      <span class="nav-icon">📚</span>
+      <span>Review</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
