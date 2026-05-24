@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#00ff88">
+<meta name="description" content="OTAFF飲食料品製造業 特定技能1号 SRS単語学習アプリ">
+<title>OTAFF SRS — 食品製造 日本語単語</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a0a0f'/><text x='16' y='22' font-size='16' text-anchor='middle'>🏭</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="splash">
+  <div class="sp-inner">
+    <div class="sp-icon">🏭</div>
+    <div class="sp-brand">OTAFF SRS</div>
+    <div class="sp-jp">食品製造 日本語単語</div>
+    <div class="sp-bar"><div class="sp-fill"></div></div>
+    <div class="sp-src">特定技能1号評価試験 学習テキスト 第5.0版</div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <header id="hdr">
+    <div class="hdr-row">
+      <div class="hdr-brand"><span>🏭</span><span class="hdr-name">OTAFF SRS</span></div>
+      <div class="hdr-chips">
+        <div class="hchip hchip-due" title="今日のdue単語"><span>📚</span><b id="h-due">0</b></div>
+        <div class="hchip hchip-str" title="連続学習日数"><span>🔥</span><b id="h-str">0</b></div>
+      </div>
+      <button class="h-btn" id="btn-srch" title="検索">🔍</button>
+    </div>
+    <div id="srch-row" class="srch-row hidden">
+      <input id="srch-in" type="text" placeholder="単語検索 (漢字 / Indonesia / furigana)..." autocomplete="off">
+      <button id="srch-x">✕</button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HOME -->
+    <section id="v-home" class="view active">
+      <div class="today-hero">
+        <div class="th-top">
+          <div id="th-greet" class="th-greet"></div>
+          <div id="th-date" class="th-date"></div>
+        </div>
+        <div class="th-nums">
+          <div class="tn-item tn-due"><div class="tn-n" id="tn-due">0</div><div class="tn-l">今日のレビュー</div></div>
+          <div class="tn-div"></div>
+          <div class="tn-item"><div class="tn-n" id="tn-new">0</div><div class="tn-l">新しいカード</div></div>
+          <div class="tn-div"></div>
+          <div class="tn-item"><div class="tn-n" id="tn-lrn">0</div><div class="tn-l">習得済み</div></div>
+        </div>
+        <div class="th-prog-row">
+          <div class="th-prog-bg"><div id="th-prog-fill" class="th-prog-fill"></div></div>
+          <div id="th-prog-pct" class="th-prog-pct">0%</div>
+        </div>
+        <button id="btn-study-now" class="btn-now">今すぐ学習 →</button>
+      </div>
+
+      <div class="sec">
+        <div class="sec-hdr"><h3>カテゴリー</h3><button class="btn-ghost-sm" id="btn-reset">リセット</button></div>
+        <div id="cat-grid" class="cat-grid"></div>
+      </div>
+
+      <div class="sec">
+        <h3>学習モード</h3>
+        <div class="mode-list">
+          <div class="mode-row" id="m-srs"><span class="mr-ic">🧠</span><div class="mr-txt"><b>SRS レビュー</b><span>SM-2 スペースド反復 (Anki方式)</span></div><span class="mr-arr">→</span></div>
+          <div class="mode-row" id="m-fc"><span class="mr-ic">🃏</span><div class="mr-txt"><b>フラッシュカード</b><span>カードをめくって学習</span></div><span class="mr-arr">→</span></div>
+          <div class="mode-row" id="m-jp"><span class="mr-ic">🇯🇵</span><div class="mr-txt"><b>日本語 → インドネシア語</b><span>漢字を見てインドネシア語入力</span></div><span class="mr-arr">→</span></div>
+          <div class="mode-row" id="m-id"><span class="mr-ic">🇮🇩</span><div class="mr-txt"><b>インドネシア語 → 日本語</b><span>インドネシア語を見て漢字/ふりがな入力</span></div><span class="mr-arr">→</span></div>
+          <div class="mode-row" id="m-rev"><span class="mr-ic">📚</span><div class="mr-txt"><b>習得済み単語一覧</b><span>覚えた単語を確認</span></div><span class="mr-arr">→</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SRS -->
+    <section id="v-srs" class="view">
+      <div class="vhdr">
+        <button class="back-btn" id="srs-back">← Back</button>
+        <div class="vhdr-title">SRS レビュー</div>
+        <div class="vhdr-prog"><span id="srs-ci">0</span>/<span id="srs-ct">0</span></div>
+      </div>
+      <div class="pbar"><div id="srs-pbar" class="pbar-fill"></div></div>
+      <div class="card-stage" id="srs-stage">
+        <div class="card-wrap">
+          <div class="card" id="srs-card">
+            <div class="cf">
+              <div class="c-cat" id="sc-cat"></div>
+              <ruby id="sc-ruby" class="c-ruby"><span id="sc-kanji" class="c-kanji"></span><rt id="sc-furi"></rt></ruby>
+              <div id="sc-rom" class="c-rom"></div>
+              <div class="c-hint">タップして答えを見る</div>
+            </div>
+            <div class="cb">
+              <div class="c-kanji-sm" id="sc-kanji-b"></div>
+              <div class="c-furi-sm" id="sc-furi-b"></div>
+              <div class="c-ans" id="sc-ans"></div>
+              <div class="c-desc" id="sc-desc"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sw-ind sw-l" id="sw-l">✗ Lagi</div>
+        <div class="sw-ind sw-r" id="sw-r">✓ Hafal</div>
+      </div>
+      <div id="srs-flip-hint" class="flip-hint">
+        <button class="btn-flip" id="srs-flip">↻ Balik Kartu</button>
+        <p class="sw-note">または左右にスワイプ</p>
+      </div>
+      <div id="srs-rating" class="rating hidden">
+        <div class="rating-lbl">どのくらい簡単でしたか？</div>
+        <div class="rating-btns">
+          <button class="rbt rbt-again" data-q="1"><span class="rbt-em">😰</span><span class="rbt-nm">Lagi</span><span class="rbt-iv" id="rv-1"></span></button>
+          <button class="rbt rbt-hard" data-q="2"><span class="rbt-em">😓</span><span class="rbt-nm">Susah</span><span class="rbt-iv" id="rv-2"></span></button>
+          <button class="rbt rbt-good" data-q="3"><span class="rbt-em">😊</span><span class="rbt-nm">Oke</span><span class="rbt-iv" id="rv-3"></span></button>
+          <button class="rbt rbt-easy" data-q="4"><span class="rbt-em">😎</span><span class="rbt-nm">Mudah</span><span class="rbt-iv" id="rv-4"></span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLASHCARD -->
+    <section id="v-fc" class="view">
+      <div class="vhdr">
+        <button class="back-btn" id="fc-back">← Back</button>
+        <div class="vhdr-title" id="fc-title">フラッシュカード</div>
+        <div class="vhdr-prog"><span id="fc-ci">1</span>/<span id="fc-ct">1</span></div>
+      </div>
+      <div class="pbar"><div id="fc-pbar" class="pbar-fill"></div></div>
+      <div class="card-stage" id="fc-stage">
+        <div class="card-wrap">
+          <div class="card" id="fc-card">
+            <div class="cf">
+              <div class="c-cat" id="fc-cat"></div>
+              <ruby id="fc-ruby" class="c-ruby"><span id="fc-kanji" class="c-kanji"></span><rt id="fc-furi"></rt></ruby>
+              <div id="fc-rom" class="c-rom"></div>
+              <div class="c-hint">タップして答えを見る</div>
+            </div>
+            <div class="cb">
+              <div class="c-kanji-sm" id="fc-kanji-b"></div>
+              <div class="c-furi-sm" id="fc-furi-b"></div>
+              <div class="c-ans" id="fc-ans"></div>
+              <div class="c-desc" id="fc-desc"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sw-ind sw-l" id="fc-swl">✗ Skip</div>
+        <div class="sw-ind sw-r" id="fc-swr">✓ Got it!</div>
+      </div>
+      <div class="fc-btns">
+        <button class="fbt fbt-skip" id="fc-skip">✗ Skip</button>
+        <button class="fbt fbt-flip" id="fc-flip">↻ Flip</button>
+        <button class="fbt fbt-got" id="fc-got">✓ Got it!</button>
+      </div>
+      <p class="sw-note">または左右にスワイプ</p>
+    </section>
+
+    <!-- TYPING JP→ID -->
+    <section id="v-jp" class="view">
+      <div class="vhdr">
+        <button class="back-btn" id="jp-back">← Back</button>
+        <div class="vhdr-title">日本語 → インドネシア語</div>
+        <div class="vhdr-prog"><span id="jp-ci">1</span>/<span id="jp-ct">1</span></div>
+      </div>
+      <div class="pbar"><div id="jp-pbar" class="pbar-fill"></div></div>
+      <div class="type-area">
+        <div class="type-prompt">
+          <div class="tp-lbl">インドネシア語で入力してください：</div>
+          <ruby id="tp-ruby" class="c-ruby tp-ruby"><span id="tp-kanji" class="c-kanji tp-kanji"></span><rt id="tp-furi"></rt></ruby>
+          <div id="tp-desc" class="tp-desc"></div>
+        </div>
+        <div class="type-inp-row">
+          <input id="tp-in" type="text" placeholder="Ketik arti Indonesia..." autocomplete="off" autocorrect="off" spellcheck="false">
+          <button id="tp-sub">送信 →</button>
+        </div>
+        <div id="tp-fb" class="tp-fb hidden">
+          <div class="fb-ic" id="fb-ic1"></div>
+          <div class="fb-ans" id="fb-ans1"></div>
+          <div class="fb-you" id="fb-you1"></div>
+          <button class="btn-next" id="tp-next">次へ →</button>
+        </div>
+        <div class="type-tools"><button class="btn-ghost-sm" id="tp-skip">スキップ</button><button class="btn-ghost-sm" id="tp-hint">💡 ヒント</button></div>
+      </div>
+    </section>
+
+    <!-- TYPING ID→JP -->
+    <section id="v-id" class="view">
+      <div class="vhdr">
+        <button class="back-btn" id="id-back">← Back</button>
+        <div class="vhdr-title">インドネシア語 → 日本語</div>
+        <div class="vhdr-prog"><span id="id-ci">1</span>/<span id="id-ct">1</span></div>
+      </div>
+      <div class="pbar"><div id="id-pbar" class="pbar-fill"></div></div>
+      <div class="type-area">
+        <div class="type-prompt">
+          <div class="tp-lbl">日本語（漢字またはふりがな）を入力してください：</div>
+          <div class="tp-id-word" id="tid-word"></div>
+          <div id="tid-desc" class="tp-desc"></div>
+        </div>
+        <div class="type-inp-row">
+          <input id="tid-in" type="text" placeholder="漢字またはふりがなを入力..." autocomplete="off" autocorrect="off" spellcheck="false">
+          <button id="tid-sub">送信 →</button>
+        </div>
+        <div id="tid-fb" class="tp-fb hidden">
+          <div class="fb-ic" id="fb-ic2"></div>
+          <div class="fb-ans" id="fb-ans2"></div>
+          <div class="fb-you" id="fb-you2"></div>
+          <button class="btn-next" id="tid-next">次へ →</button>
+        </div>
+        <div class="type-tools"><button class="btn-ghost-sm" id="tid-skip">スキップ</button><button class="btn-ghost-sm" id="tid-hint">💡 ヒント</button></div>
+      </div>
+    </section>
+
+    <!-- REVIEW LIST -->
+    <section id="v-rev" class="view">
+      <div class="vhdr">
+        <button class="back-btn" id="rev-back">← Back</button>
+        <div class="vhdr-title">習得済み単語</div>
+        <div class="vhdr-prog" id="rev-cnt"></div>
+      </div>
+      <div id="rev-list" class="rev-list"></div>
+    </section>
+
+    <!-- CAT SELECT -->
+    <section id="v-cs" class="view">
+      <div class="vhdr">
+        <button class="back-btn" id="cs-back">← Back</button>
+        <div class="vhdr-title" id="cs-title">カテゴリー選択</div>
+      </div>
+      <div id="cs-desc" class="cs-desc"></div>
+      <div id="cs-grid" class="cs-grid"></div>
+    </section>
+
+    <!-- SEARCH RESULTS -->
+    <section id="v-srch" class="view">
+      <div class="vhdr">
+        <button class="back-btn" id="srch-back">← Back</button>
+        <div class="vhdr-title">検索結果</div>
+        <div class="vhdr-prog" id="srch-cnt"></div>
+      </div>
+      <div id="srch-list" class="srch-list"></div>
+    </section>
+
+    <!-- COMPLETE -->
+    <section id="v-done" class="view">
+      <div class="done-screen">
+        <div class="done-em" id="done-em">🎉</div>
+        <h2 class="done-title">セッション完了！</h2>
+        <div class="done-stats">
+          <div class="ds"><span id="ds-ok">0</span><small>正解</small></div>
+          <div class="ds"><span id="ds-sk">0</span><small>スキップ</small></div>
+          <div class="ds"><span id="ds-tot">0</span><small>合計</small></div>
+        </div>
+        <div class="done-msg" id="done-msg"></div>
+        <div class="done-btns">
+          <button class="btn-primary" id="dn-again">もう一度</button>
+          <button class="btn-ghost" id="dn-home">← ホーム</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <nav id="bnav">
+    <button class="nb active" data-v="home"><span>🏠</span><span>ホーム</span></button>
+    <button class="nb" data-v="srs"><span>🧠</span><span>SRS</span></button>
+    <button class="nb" data-v="fc"><span>🃏</span><span>カード</span></button>
+    <button class="nb" data-v="jp"><span>✍️</span><span>タイプ</span></button>
+  </nav>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+<script src="script.js"></script>
+</body>
+</html>
